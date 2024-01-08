@@ -37,14 +37,12 @@ int main(int argc, char *argv[]) {
     QAction *exitAction = trayMenu.addAction("Вихід з програми");
     QObject::connect(exitAction, &QAction::triggered, &app, &QApplication::quit);
 
-    trayIcon.setContextMenu(&trayMenu);
-
-    // Використання сигналу activated для відображення меню
-    QObject::connect(&trayIcon, &QSystemTrayIcon::activated, [&trayMenu, &trayIcon](QSystemTrayIcon::ActivationReason reason){
-        if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::Context) {
-            trayMenu.exec(QCursor::pos());
-        }
+    // Закриття меню при втраті фокусу
+    QObject::connect(&trayMenu, &QMenu::aboutToHide, [&](){
+        // Код для обробки закриття меню (якщо потрібно)
     });
+
+    trayIcon.setContextMenu(&trayMenu);
 
     return app.exec();
 }
